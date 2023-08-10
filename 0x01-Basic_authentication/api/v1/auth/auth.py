@@ -3,20 +3,14 @@
 Class to manage api authentication
 """
 
-from flask import requests
+from flask import request
+from typing import List, TypeVar
 
 
 class Auth():
     """
     Class methods to handle authentication requests
     """
-    def __init__(self):
-        """
-        Initialize class
-        """
-        pass
-
-
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
         Public method that manages queried paths
