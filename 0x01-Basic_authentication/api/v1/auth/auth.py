@@ -61,3 +61,10 @@ class Auth():
             None (str): returns None, request will be the Flask request object
         """
         return None
+
+
+class BasicAuth(Auth):
+    """
+    Basic authentication implementation
+    """
+    pass

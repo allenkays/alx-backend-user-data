@@ -15,10 +15,13 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 
 
-if getenv("AUTH_TYPE"):
-    if auth:
-        from api.v1.auth.auth import Auth
-        auth = Auth()
+auth_type = getenv("AUTH_TYPE")
+if (auth_type == "basic_auth"):
+    from api.v1.auth import BasicAuth
+    auth = BasicAuth()
+elif auth_type:
+    from api.v1.auth.auth import Auth
+    auth = Auth()
 
 
 @app.before_request
@@ -35,10 +38,10 @@ def before_request_handler():
         ]
     if request.path not in allowed_paths:
         return
-    if (auth.authorization_header(request) is None):
-        abort(401)
-    if auth.current_user(request) is None:
-        abort(403)
+        if (auth.authorization_header(request) is None):
+            abort(401)
+        if auth.current_user(request) is None:
+            abort(403)
 
 
 @app.errorhandler(404)
