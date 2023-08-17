@@ -37,3 +37,11 @@ class DB:
         self._session.add(addUser)
         self._session.commit()
         return addUser
+
+    def find_user_by(self, **kwargs):
+        """Find a user based on filter queries"""
+        try:
+            user = self._session.query(User).filter_by(**kwargs).one()
+            return user
+        except NoResultFound:
+            raise NoResultFound("No user found with the given filters")
