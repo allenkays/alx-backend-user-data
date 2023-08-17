@@ -40,6 +40,14 @@ class DB:
 
     def find_user_by(self, **kwargs):
         """Find a user based on filter queries"""
+        if not kwargs:
+            raise InvalidRequestError
+
+        cols = ["id", "email", "hashed_password", "session_id", "reset_token"]
+
+        for arg in kwargs:
+            if arg not in cols:
+                raise InvalidRequestError
         try:
             user = self._session.query(User).filter_by(**kwargs).one()
             return user
