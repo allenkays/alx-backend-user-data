@@ -3,7 +3,9 @@
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 
 from user import Base, User
@@ -39,17 +41,18 @@ class DB:
         return addUser
 
     def find_user_by(self, **kwargs):
-        """Find a user based on filter queries"""
+        """ind a user based on filter queries
+        """
         if not kwargs:
             raise InvalidRequestError
 
-        cols = ["id", "email", "hashed_password", "session_id", "reset_token"]
+        allowed_cols = ["id", "email", "hashed_password", "session_id", "reset_token"]
 
         for arg in kwargs:
-            if arg not in cols:
+            if arg not in allowed_cols:
                 raise InvalidRequestError
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if user:
             return user
-        except NoResultFound:
-            raise NoResultFound("No user found with the given filters")
+        else:
+            raise NoResultFound
