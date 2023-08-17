@@ -6,7 +6,7 @@ Script creates a SQLAlchemy model named user
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declative_base()
+Base = declarative_base()
 
 
 class User(Base):
