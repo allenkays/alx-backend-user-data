@@ -46,11 +46,12 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
 
-        allowed_cols = ["id", "email", "hashed_password", "session_id", "reset_token"]
+        cols = ["id", "email", "hashed_password", "session_id", "reset_token"]
 
         for arg in kwargs:
-            if arg not in allowed_cols:
+            if arg not in cols:
                 raise InvalidRequestError
+
         user = self._session.query(User).filter_by(**kwargs).first()
         if user:
             return user
