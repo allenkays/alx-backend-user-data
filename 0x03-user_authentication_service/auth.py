@@ -4,6 +4,7 @@ This module contains methods that handle authentication
 """
 import bcrypt
 
+
 def _hash_password(password: str) -> bytes:
     """Generate a salted hash of the input password
     """
