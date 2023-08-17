@@ -27,15 +27,8 @@ class Auth:
         Registers a new user
         """
         # Check if the user already exists
-        if self._db.get_user_by_email(email) is not None:
-            raise ValueError("User {} already exists".format(email))
-
-        # Hash the password
-        hashed_password = self._hash_password(password)
-
-        # Create a new User object and save it
-        user = User(email, hashed_password
-        self._db.save_user(user)
-
-        return user
-
+        try:
+            self._db.find_user_by(email=email):
+                raise ValueError("User {} already exists".format(email))
+        except NoResultFound:
+            self._db.add_user(email, _hash_password(password))
