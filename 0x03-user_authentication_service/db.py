@@ -57,3 +57,14 @@ class DB:
             return user
         else:
             raise NoResultFound
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Update a user's attributes in the database
+        """
+        user = self.find_user_by(id=user_id)
+        allowed_cols = ["email", "hashed_password", "session_id", "reset_token"]
+        for arg in kwargs:
+            if arg not in allowed_cols:
+                raise ValueError(f"Invalid attribute: {arg}")
+            setattr(user, arg, kwargs[arg])
+        self._session.commit()
