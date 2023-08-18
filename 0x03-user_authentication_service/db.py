@@ -4,7 +4,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 
@@ -62,9 +62,9 @@ class DB:
         """Update a user's attributes in the database
         """
         user = self.find_user_by(id=user_id)
-        allowed_cols = ["email", "hashed_password", "session_id", "reset_token"]
+        cols = ["email", "hashed_password", "session_id", "reset_token"]
         for arg in kwargs:
-            if arg not in allowed_cols:
+            if arg not in cols:
                 raise ValueError(f"Invalid attribute: {arg}")
             setattr(user, arg, kwargs[arg])
         self._session.commit()
